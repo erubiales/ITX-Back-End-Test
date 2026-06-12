@@ -1,0 +1,6 @@
+com\test\similarproducts\client\ProductClient.class
+com\test\similarproducts\config\AppConfig.class
+com\test\similarproducts\model\ProductDetail.class
+com\test\similarproducts\controller\SimilarProductsController.class
+com\test\similarproducts\service\SimilarProductsService.class
+com\test\similarproducts\SimilarProductsApplication.class
