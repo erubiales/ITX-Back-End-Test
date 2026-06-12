@@ -31,3 +31,37 @@ The following topics will be considered:
 - Code clarity and maintainability
 - Performance
 - Resilience
+
+## Solution
+
+The app is implemented using **Spring Boot 3** with **Spring MVC** in `similarproducts/`
+
+### Architecture
+
+The project follows this architecture
+
+- **Controller** — exposes `GET /product/{productId}/similar` on port 5000
+- **Service** — Calls to the external APIs/Docker containers
+- **Client** — handles HTTP comms
+- **Model** — `ProductDetail` uses records like Java 17 recommends
+
+### Technical decisions
+
+- **Parallel calls `CompletableFuture`** — all product detail requests are fired concurrently, response time minimized
+- **Resilience** — if a similar product returns 404 or any error, it is ignored and the rest of the results are still returned
+- **Timeouts** — connect timeout of 2s and read timeout of 5s configured in RestTemplate
+- **Externalized configuration** — the base URL of the external service is configurable via environment variable `PRODUCT_SERVICE_BASE_URL`, depends if we're in dev or production environment, we can change it fast
+
+### Run procedure
+
+Start all services including the app:
+```
+docker-compose up -d
+```
+
+Or run the app locally (Important, mock should be running first):
+```
+cd similarproducts
+mvn clean package -DskipTests
+java -jar target/similarproducts-0.0.1-SNAPSHOT.jar
+```
